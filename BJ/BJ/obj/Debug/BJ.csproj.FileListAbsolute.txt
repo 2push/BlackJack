@@ -1,0 +1,7 @@
+C:\Users\Roman_2\Desktop\Repositories\BlackJack\BJ\BJ\bin\Debug\BJ.exe.config
+C:\Users\Roman_2\Desktop\Repositories\BlackJack\BJ\BJ\bin\Debug\BJ.exe
+C:\Users\Roman_2\Desktop\Repositories\BlackJack\BJ\BJ\bin\Debug\BJ.pdb
+C:\Users\Roman_2\Desktop\Repositories\BlackJack\BJ\BJ\obj\Debug\BJ.csprojResolveAssemblyReference.cache
+C:\Users\Roman_2\Desktop\Repositories\BlackJack\BJ\BJ\obj\Debug\BJ.csproj.CoreCompileInputs.cache
+C:\Users\Roman_2\Desktop\Repositories\BlackJack\BJ\BJ\obj\Debug\BJ.exe
+C:\Users\Roman_2\Desktop\Repositories\BlackJack\BJ\BJ\obj\Debug\BJ.pdb
