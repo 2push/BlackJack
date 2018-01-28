@@ -21,9 +21,8 @@ namespace BJ
 
         public void InitiateNewRound()
         {           
-            disrtibution.Start(out ICharacter player, out ICharacter bot);
+            disrtibution.Start(out Player player, out Player bot);
             CheckMoneyAmount(player, bot);
-            //AskForNewRound();
         }
        
         private void AskForNewRound()
@@ -38,7 +37,7 @@ namespace BJ
             Console.ReadKey();
         }
         
-        private void CheckMoneyAmount(ICharacter player, ICharacter bot)
+        private void CheckMoneyAmount(Player player, Player bot)
         {
             if (player.Money < 19)
             {

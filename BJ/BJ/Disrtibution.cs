@@ -9,8 +9,9 @@ namespace BJ
     class Disrtibution
     {
         Deck _deck = new Deck();
-        Player _player = new Player();
-        Bot _bot = new Bot();
+        Player _player = new Player(PlayerType.User);
+        Player _bot = new Player(PlayerType.Bot);
+        Random _rnd = new Random(); //bot's decision
 
         private List<CardType> _cards;
         private int _randomElementIndex;
@@ -31,7 +32,7 @@ namespace BJ
                 {CardType.King, 10}
             };
 
-        public void Start(out ICharacter player, out ICharacter bot)
+        public void Start(out Player player, out Player bot)
         {
             _cards = _deck.GetDeck();
             _player.Cards = new List<CardType>();
@@ -66,14 +67,19 @@ namespace BJ
         {
             Console.WriteLine("Bot's turn");
             GetFirstTwoCards(_bot);
-            while (_bot.Decision())
+            while (BotsDecision())
             {
                 GetCard(_bot);
             }
             CheckFinalScores();
         }
 
-        private void GetFirstTwoCards(ICharacter character)
+        private bool BotsDecision()
+        {
+            return Convert.ToBoolean(rnd.Next(2));
+        }
+
+        private void GetFirstTwoCards(Player character)
         {
             for (int i = 0; i < 2; i++)
             {
@@ -81,7 +87,7 @@ namespace BJ
             }
         }
 
-        private void GetCard(ICharacter character)
+        private void GetCard(Player character)
         {
             _randomElementIndex = rnd.Next(_cards.Count);
             character.Cards.Add(_cards[_randomElementIndex]);
@@ -89,7 +95,7 @@ namespace BJ
             AddScores(character, character.Cards.Last());
         }       
 
-        private void AddScores(ICharacter character, CardType cardType)
+        private void AddScores(Player character, CardType cardType)
         {
             cardsValue[CardType.Ace] = 1;
             if (character.CurrentPoints < 11)
@@ -97,16 +103,16 @@ namespace BJ
                 cardsValue[CardType.Ace] = 11;
             }
             character.CurrentPoints += cardsValue[cardType];
-            Console.WriteLine(String.Format("{0} has taken one card, which is {1} for {2} points.", character.ToString(), cardType,cardsValue[cardType]));
+            Console.WriteLine(String.Format("{0} has taken one card, which is {1} for {2} points.", character.PlayerType, cardType,cardsValue[cardType]));
             CheckScores(character); 
         }
 
-        private void CheckScores(ICharacter character)
+        private void CheckScores(Player character)
         {
-            Console.WriteLine(String.Format("{0} has {1} points", character.ToString(), character.CurrentPoints));
+            Console.WriteLine(String.Format("{0} has {1} points", character.PlayerType, character.CurrentPoints));
             if (character.CurrentPoints > 21)
             {
-                Console.WriteLine(String.Format("{0} busts!", character.ToString()));
+                Console.WriteLine(String.Format("{0} busts!", character.PlayerType));
                 return;
             }           
         }
@@ -131,11 +137,11 @@ namespace BJ
 
         private void AnnounceMoneyAmount()
         {
-            Console.WriteLine(String.Format("{0} has {1} money", _player.ToString(), _player.Money));
-            Console.WriteLine(String.Format("{0} has {1} money", _bot.ToString(), _bot.Money));
+            Console.WriteLine(String.Format("{0} has {1} money", _player.PlayerType, _player.Money));
+            Console.WriteLine(String.Format("{0} has {1} money", _bot.PlayerType, _bot.Money));
         }
 
-        private void TransferMoneyToWinner(ICharacter character)
+        private void TransferMoneyToWinner(Player character)
         {
             if (character is Player)
             {

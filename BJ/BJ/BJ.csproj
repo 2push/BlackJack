@@ -42,14 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bot.cs" />
-    <Compile Include="Card.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Enums\CardType.cs" />
     <Compile Include="Disrtibution.cs" />
-    <Compile Include="ICharacter.cs" />
     <Compile Include="NewRound.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Enums\PlayerType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
