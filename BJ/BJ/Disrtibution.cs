@@ -8,15 +8,13 @@ namespace BJ
 {
     class Disrtibution
     {
-        Deck _deck = new Deck();
         Player _player = new Player(PlayerType.User);
         Player _bot = new Player(PlayerType.Bot);
-        Random _rnd = new Random(); //bot's decision
-
-        private List<CardType> _cards;
-        private int _randomElementIndex;
-        Random rnd = new Random();
-        Dictionary<CardType, int> cardsValue = new Dictionary<CardType, int>()
+        Random rnd = new Random(); //bot's decision
+        TextOutput textOutput = new TextOutput();
+        Dealer dealer = new Dealer();
+        
+        Dictionary<CardType, int> cardsValue = new Dictionary<CardType, int>
             {
                 {CardType.Two, 2},
                 {CardType.Three, 3},
@@ -32,13 +30,17 @@ namespace BJ
                 {CardType.King, 10}
             };
 
-        public void Start(out Player player, out Player bot)
+        public Disrtibution()
         {
-            _cards = _deck.GetDeck();
+            dealer.CardReceived += AddScores;
+        }
+
+        public void Start(out Player player, out Player bot)
+        {          
             _player.Cards = new List<CardType>();
             _bot.Cards = new List<CardType>();
             RefreshPoints();
-            AnnounceMoneyAmount();
+            textOutput.AnnounceMoneyAmount(_player, _bot);
             DoPlayersTurn();
             DoBotsTurn();
             player = _player;
@@ -53,23 +55,21 @@ namespace BJ
 
         private void DoPlayersTurn()
         {
-            Console.WriteLine("Your turn");
-            GetFirstTwoCards(_player);
-            Console.WriteLine("More? y/n");
-            while (Console.ReadLine() == "y")
+            textOutput.ShowYourTurnMessage();
+            dealer.GetFirstTwoCards(ref _player);      
+            while (textOutput.AskForNewCard())
             {            
-                GetCard(_player);
-            }
-            
+                dealer.GetCard(ref _player);
+            }            
         }
 
         private void DoBotsTurn()
         {
-            Console.WriteLine("Bot's turn");
-            GetFirstTwoCards(_bot);
+            textOutput.ShowBotsTurnMessage();
+            dealer.GetFirstTwoCards(ref _bot);
             while (BotsDecision())
             {
-                GetCard(_bot);
+                dealer.GetCard(ref _bot);
             }
             CheckFinalScores();
         }
@@ -79,22 +79,6 @@ namespace BJ
             return Convert.ToBoolean(rnd.Next(2));
         }
 
-        private void GetFirstTwoCards(Player character)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                GetCard(character);
-            }
-        }
-
-        private void GetCard(Player character)
-        {
-            _randomElementIndex = rnd.Next(_cards.Count);
-            character.Cards.Add(_cards[_randomElementIndex]);
-            _cards.RemoveAt(_randomElementIndex);
-            AddScores(character, character.Cards.Last());
-        }       
-
         private void AddScores(Player character, CardType cardType)
         {
             cardsValue[CardType.Ace] = 1;
@@ -103,16 +87,16 @@ namespace BJ
                 cardsValue[CardType.Ace] = 11;
             }
             character.CurrentPoints += cardsValue[cardType];
-            Console.WriteLine(String.Format("{0} has taken one card, which is {1} for {2} points.", character.PlayerType, cardType,cardsValue[cardType]));
+            textOutput.ShowWhatCardTaken(character.PlayerType, cardType, cardsValue[cardType]);
             CheckScores(character); 
         }
 
         private void CheckScores(Player character)
         {
-            Console.WriteLine(String.Format("{0} has {1} points", character.PlayerType, character.CurrentPoints));
+            textOutput.ShowScoresHas(character.PlayerType, character.CurrentPoints);
             if (character.CurrentPoints > 21)
             {
-                Console.WriteLine(String.Format("{0} busts!", character.PlayerType));
+                textOutput.ShowBustsMessage(character.PlayerType);
                 return;
             }           
         }
@@ -121,29 +105,23 @@ namespace BJ
         {
             if (_player.CurrentPoints > 21)
             {
-                Console.WriteLine("Computer has won!");
+                textOutput.ShowPlayerLostMessage();
                 TransferMoneyToWinner(_bot);
                 return;                 
             }
             if (_player.CurrentPoints > _bot.CurrentPoints || _bot.CurrentPoints > 21)
             {
-                Console.WriteLine("Player has won!");
+                textOutput.ShowPlayerWonMessage();
                 TransferMoneyToWinner(_player);
                 return;
             }
-            Console.WriteLine("Computer has won!");
+            textOutput.ShowPlayerLostMessage();
             TransferMoneyToWinner(_bot);
-        }
-
-        private void AnnounceMoneyAmount()
-        {
-            Console.WriteLine(String.Format("{0} has {1} money", _player.PlayerType, _player.Money));
-            Console.WriteLine(String.Format("{0} has {1} money", _bot.PlayerType, _bot.Money));
         }
 
         private void TransferMoneyToWinner(Player character)
         {
-            if (character is Player)
+            if (character.PlayerType is PlayerType.User)
             {
                 _bot.Money = _bot.Money - 20;
                 _player.Money = _player.Money + 20;

@@ -8,12 +8,12 @@ namespace BJ
 {
     class NewRound
     {
-        private Disrtibution disrtibution = new Disrtibution();
+        private TextOutput _textOutput = new TextOutput();
+        private Disrtibution _disrtibution = new Disrtibution();
        
         public void StartTheGame()
-        {
-            Console.WriteLine("G'day! Let's begin? y/n");
-            if (Console.ReadLine() == "y")
+        {        
+            if (_textOutput.AskForBeginning())
             {
                 InitiateNewRound();
             }
@@ -21,33 +21,31 @@ namespace BJ
 
         public void InitiateNewRound()
         {           
-            disrtibution.Start(out Player player, out Player bot);
+            _disrtibution.Start(out Player player, out Player bot);
             CheckMoneyAmount(player, bot);
         }
        
         private void AskForNewRound()
-        {
-            Console.WriteLine("One more round? y/n");
-            if (Console.ReadLine() == "y")
+        {          
+            if (_textOutput.AskForNewRound())
             {
-                this.InitiateNewRound();
+                InitiateNewRound();
                 return;
             }
-            Console.WriteLine("Thanks for the game");
-            Console.ReadKey();
+            _textOutput.ShowEndGameMessage();
         }
         
         private void CheckMoneyAmount(Player player, Player bot)
         {
             if (player.Money < 19)
             {
-                Console.WriteLine("Player lost");
+                _textOutput.ShowPlayerLostMessage();
                 return;
             }
 
             if (bot.Money < 19)
             {
-                Console.WriteLine("Player won");
+                _textOutput.ShowPlayerWonMessage();
                 return;
             }
             AskForNewRound();

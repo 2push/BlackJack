@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dealer.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Enums\CardType.cs" />
     <Compile Include="Disrtibution.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Enums\PlayerType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextOutput.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
