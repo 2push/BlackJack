@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    class TextOutput
+    class ConsoleOutput
     {
         public bool AskForBeginning()
         {

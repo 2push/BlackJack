@@ -11,38 +11,24 @@ namespace BJ
         Player _player = new Player(PlayerType.User);
         Player _bot = new Player(PlayerType.Bot);
         Random rnd = new Random(); //bot's decision
-        TextOutput textOutput = new TextOutput();
+        ConsoleOutput consoleOutput = new ConsoleOutput();
         Dealer dealer = new Dealer();
-        
-        Dictionary<CardType, int> cardsValue = new Dictionary<CardType, int>
-            {
-                {CardType.Two, 2},
-                {CardType.Three, 3},
-                {CardType.Four, 4},
-                {CardType.Five, 5},
-                {CardType.Six, 6},
-                {CardType.Seven, 7},
-                {CardType.Eight, 8},
-                {CardType.Nine, 9},
-                {CardType.Ten, 10},
-                {CardType.Jack, 10},
-                {CardType.Queen, 10},
-                {CardType.King, 10}
-            };
-
+        Scores scores;
+             
         public Disrtibution()
         {
-            dealer.CardReceived += AddScores;
+            scores = new Scores(dealer);
         }
 
         public void Start(out Player player, out Player bot)
-        {          
+        {    
             _player.Cards = new List<CardType>();
             _bot.Cards = new List<CardType>();
             RefreshPoints();
-            textOutput.AnnounceMoneyAmount(_player, _bot);
+            consoleOutput.AnnounceMoneyAmount(_player, _bot);
             DoPlayersTurn();
             DoBotsTurn();
+            TransferMoneyToWinner(scores.CheckFinalScores(_player.CurrentPoints, _bot.CurrentPoints));
             player = _player;
             bot = _bot;
         }
@@ -55,9 +41,9 @@ namespace BJ
 
         private void DoPlayersTurn()
         {
-            textOutput.ShowYourTurnMessage();
+            consoleOutput.ShowYourTurnMessage();
             dealer.GetFirstTwoCards(ref _player);      
-            while (textOutput.AskForNewCard())
+            while (consoleOutput.AskForNewCard())
             {            
                 dealer.GetCard(ref _player);
             }            
@@ -65,13 +51,12 @@ namespace BJ
 
         private void DoBotsTurn()
         {
-            textOutput.ShowBotsTurnMessage();
+            consoleOutput.ShowBotsTurnMessage();
             dealer.GetFirstTwoCards(ref _bot);
             while (BotsDecision())
             {
                 dealer.GetCard(ref _bot);
-            }
-            CheckFinalScores();
+            }          
         }
 
         private bool BotsDecision()
@@ -79,49 +64,9 @@ namespace BJ
             return Convert.ToBoolean(rnd.Next(2));
         }
 
-        private void AddScores(Player character, CardType cardType)
+        private void TransferMoneyToWinner(PlayerType characterType)
         {
-            cardsValue[CardType.Ace] = 1;
-            if (character.CurrentPoints < 11)
-            {
-                cardsValue[CardType.Ace] = 11;
-            }
-            character.CurrentPoints += cardsValue[cardType];
-            textOutput.ShowWhatCardTaken(character.PlayerType, cardType, cardsValue[cardType]);
-            CheckScores(character); 
-        }
-
-        private void CheckScores(Player character)
-        {
-            textOutput.ShowScoresHas(character.PlayerType, character.CurrentPoints);
-            if (character.CurrentPoints > 21)
-            {
-                textOutput.ShowBustsMessage(character.PlayerType);
-                return;
-            }           
-        }
-
-        private void CheckFinalScores()
-        {
-            if (_player.CurrentPoints > 21)
-            {
-                textOutput.ShowPlayerLostMessage();
-                TransferMoneyToWinner(_bot);
-                return;                 
-            }
-            if (_player.CurrentPoints > _bot.CurrentPoints || _bot.CurrentPoints > 21)
-            {
-                textOutput.ShowPlayerWonMessage();
-                TransferMoneyToWinner(_player);
-                return;
-            }
-            textOutput.ShowPlayerLostMessage();
-            TransferMoneyToWinner(_bot);
-        }
-
-        private void TransferMoneyToWinner(Player character)
-        {
-            if (character.PlayerType is PlayerType.User)
+            if (characterType is PlayerType.User)
             {
                 _bot.Money = _bot.Money - 20;
                 _player.Money = _player.Money + 20;

@@ -8,7 +8,7 @@ namespace BJ
 {
     class NewRound
     {
-        private TextOutput _textOutput = new TextOutput();
+        private ConsoleOutput _textOutput = new ConsoleOutput();
         private Disrtibution _disrtibution = new Disrtibution();
        
         public void StartTheGame()
