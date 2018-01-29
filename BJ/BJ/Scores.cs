@@ -18,24 +18,22 @@ namespace BJ
             _dealer = dealer;
             _dealer.CardReceived += AddScores;
 
-            for (int i = 1; i < 13; i++)
+            for (int i = 1; i < Values.cardsTillAceNum; i++)
             {
                 _cardsValue.Add((CardType)i, _cardValue);
-                if (_cardValue < 10)
+                if (_cardValue < Values.cardValueMax)
                 {
                     _cardValue++;
                 }               
             }
         }
-
-        
-              
+         
         public void AddScores(Player character, CardType cardType)
         {
-            _cardsValue[CardType.Ace] = 1;
-            if (character.CurrentPoints < 11)
+            _cardsValue[CardType.Ace] = Values.aceLowValue;
+            if (character.CurrentPoints < Values.aceHighValue)
             {
-                _cardsValue[CardType.Ace] = 11;
+                _cardsValue[CardType.Ace] = Values.aceHighValue;
             }
             character.CurrentPoints += _cardsValue[cardType];
             consoleOutput.ShowWhatCardTaken(character.PlayerType, cardType, _cardsValue[cardType]);
@@ -45,7 +43,7 @@ namespace BJ
         public void CheckScores(Player character)
         {
             consoleOutput.ShowScoresHas(character.PlayerType, character.CurrentPoints);
-            if (character.CurrentPoints > 21)
+            if (character.CurrentPoints > Values.scoreLimit)
             {
                 consoleOutput.ShowBustsMessage(character.PlayerType);
                 return;

@@ -68,12 +68,12 @@ namespace BJ
         {
             if (characterType is PlayerType.User)
             {
-                _bot.Money = _bot.Money - 20;
-                _player.Money = _player.Money + 20;
+                _bot.Money = _bot.Money - Values.moneyTransfer;
+                _player.Money = _player.Money + Values.moneyTransfer;
                 return;
             }
-            _bot.Money += 20;
-            _player.Money -= 20;          
+            _bot.Money += Values.moneyTransfer;
+            _player.Money -= Values.moneyTransfer;          
         }       
     }
 }

@@ -10,14 +10,17 @@ namespace BJ
     {
         private int _randomElementIndex;
         Deck _deck = new Deck();
-        private List<CardType> _cards;
+        private List<CardType> _cardsList;
+        private Stack<CardType> _cardsStack;
         Random rnd = new Random();
         public delegate void AddingScores(Player player, CardType cardType);
         public event AddingScores CardReceived;
 
         public Dealer()
         {
-            _cards = _deck.GetDeck();
+            _cardsList = _deck.GetDeck();
+            SortDeck();
+            _cardsStack = new Stack<CardType>(_cardsList);
         }
 
         public void GetFirstTwoCards(ref Player character)
@@ -30,13 +33,21 @@ namespace BJ
 
         public void GetCard(ref Player character)
         {
-            _randomElementIndex = rnd.Next(_cards.Count);
-            character.Cards.Add(_cards[_randomElementIndex]);
-            _cards.RemoveAt(_randomElementIndex);
+            character.Cards.Add(_cardsStack.Pop());
             if (CardReceived != null)
             {
                 CardReceived(character, character.Cards.Last());
             }
         }
+
+        private void SortDeck()
+        {
+            for (int i = 0; i < _cardsList.Count; i++)
+            {
+                CardType tmp = _cardsList[0];
+                _cardsList.RemoveAt(0);
+                _cardsList.Insert(rnd.Next(_cardsList.Count), tmp);
+            }
+        }     
     }
 }
