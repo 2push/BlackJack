@@ -1,6 +1,6 @@
 ﻿namespace BJ
 {
-    enum PlayerType
+    internal enum PlayerType
     {
         None = 0,
         User = 1,

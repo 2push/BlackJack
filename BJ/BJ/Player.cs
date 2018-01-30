@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    class Player 
+    internal class Player 
     {
         public PlayerType PlayerType { get; private set; }
         public int CurrentPoints { get; set; }
@@ -19,11 +19,11 @@ namespace BJ
             PlayerType = playerType;
             if (playerType == PlayerType.User)
             {
-                Money = Values.playerMoney;
+                Money = GameValues.playerMoney;
             }
             if (playerType == PlayerType.Bot)
             {
-                Money = Values.botMoney;
+                Money = GameValues.botMoney;
             }
         }
     }

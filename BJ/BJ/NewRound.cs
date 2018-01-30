@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    class NewRound
+    internal class NewRound
     {
-        private ConsoleOutput _textOutput = new ConsoleOutput();
         private Disrtibution _disrtibution = new Disrtibution();
        
         public void StartTheGame()
         {        
-            if (_textOutput.AskForBeginning())
+            if (ConsoleOutput.AskForBeginning())
             {
                 InitiateNewRound();
             }
@@ -27,25 +26,25 @@ namespace BJ
        
         private void AskForNewRound()
         {          
-            if (_textOutput.AskForNewRound())
+            if (ConsoleOutput.AskForNewRound())
             {
                 InitiateNewRound();
                 return;
             }
-            _textOutput.ShowEndGameMessage();
+            ConsoleOutput.ShowEndGameMessage();
         }
         
         private void CheckMoneyAmount(Player player, Player bot)
         {
-            if (player.Money < 19)
+            if (player.Money < GameValues.minimumMoneyAllowed)
             {
-                _textOutput.ShowPlayerLostMessage();
+                ConsoleOutput.ShowPlayerLostMessage();
                 return;
             }
 
-            if (bot.Money < 19)
+            if (bot.Money < GameValues.minimumMoneyAllowed)
             {
-                _textOutput.ShowPlayerWonMessage();
+                ConsoleOutput.ShowPlayerWonMessage();
                 return;
             }
             AskForNewRound();

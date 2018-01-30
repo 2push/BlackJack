@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    class Dealer
+    internal class Dealer
     {
         private int _randomElementIndex;
         Deck _deck = new Deck();

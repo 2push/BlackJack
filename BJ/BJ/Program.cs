@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
             NewRound nextRound = new NewRound();
-            nextRound.StartTheGame();    
+            nextRound.StartTheGame();              
         }
     }
 }

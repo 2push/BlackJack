@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    class Disrtibution
+    internal class Disrtibution
     {
         Player _player = new Player(PlayerType.User);
         Player _bot = new Player(PlayerType.Bot);
         Random rnd = new Random(); //bot's decision
-        ConsoleOutput consoleOutput = new ConsoleOutput();
         Dealer dealer = new Dealer();
         Scores scores;
-             
+
         public Disrtibution()
         {
             scores = new Scores(dealer);
@@ -24,56 +23,39 @@ namespace BJ
         {    
             _player.Cards = new List<CardType>();
             _bot.Cards = new List<CardType>();
-            RefreshPoints();
-            consoleOutput.AnnounceMoneyAmount(_player, _bot);
-            DoPlayersTurn();
-            DoBotsTurn();
-            TransferMoneyToWinner(scores.CheckFinalScores(_player.CurrentPoints, _bot.CurrentPoints));
+            ConsoleOutput.AnnounceMoneyAmount(_player, _bot);
+            DoPlayersTurn(_player);
+            DoPlayersTurn(_bot);
+            TransferMoneyToWinner(scores.CheckFinalScores(ref _player,ref _bot));
             player = _player;
             bot = _bot;
-        }
+        }       
 
-        private void RefreshPoints()
+        private void DoPlayersTurn(Player player)
         {
-            _player.CurrentPoints = 0;
-            _bot.CurrentPoints = 0;
-        }
-
-        private void DoPlayersTurn()
-        {
-            consoleOutput.ShowYourTurnMessage();
-            dealer.GetFirstTwoCards(ref _player);      
-            while (consoleOutput.AskForNewCard())
+            ConsoleOutput.ShowTurnMessage(player.PlayerType);
+            dealer.GetFirstTwoCards(ref player);             
+            while (player.PlayerType is PlayerType.User ? ConsoleOutput.AskForNewCard() : BotsDecision())
             {            
-                dealer.GetCard(ref _player);
+                dealer.GetCard(ref player);
             }            
-        }
-
-        private void DoBotsTurn()
-        {
-            consoleOutput.ShowBotsTurnMessage();
-            dealer.GetFirstTwoCards(ref _bot);
-            while (BotsDecision())
-            {
-                dealer.GetCard(ref _bot);
-            }          
         }
 
         private bool BotsDecision()
         {
-            return Convert.ToBoolean(rnd.Next(2));
+            return Convert.ToBoolean(rnd.Next(GameValues.randomBoolRange));
         }
 
         private void TransferMoneyToWinner(PlayerType characterType)
         {
             if (characterType is PlayerType.User)
             {
-                _bot.Money = _bot.Money - Values.moneyTransfer;
-                _player.Money = _player.Money + Values.moneyTransfer;
+                _bot.Money = _bot.Money - GameValues.moneyTransfer;
+                _player.Money = _player.Money + GameValues.moneyTransfer;
                 return;
             }
-            _bot.Money += Values.moneyTransfer;
-            _player.Money -= Values.moneyTransfer;          
+            _bot.Money += GameValues.moneyTransfer;
+            _player.Money -= GameValues.moneyTransfer;          
         }       
     }
 }

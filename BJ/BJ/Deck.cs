@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    class Deck
+    internal class Deck
     {
         List<CardType> cardsList = new List<CardType>();
 
@@ -18,7 +18,7 @@ namespace BJ
 
         private void GenerateDeck()
         {
-            for (int i = 1; i < Values.cardsTypes; i++)
+            for (int i = 1; i < GameValues.cardsTypes; i++)
             {
                 cardsList.AddRange(GenerateCardType(i));
             }
@@ -28,7 +28,7 @@ namespace BJ
         {
             var cardsOfAType = new List<CardType>();
             
-            for (int i = 0; i < Values.cardsInType; i++)
+            for (int i = 0; i < GameValues.cardsInType; i++)
             {
                 cardsOfAType.Add((CardType)cardTypeNum);
             }

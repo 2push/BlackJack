@@ -1,6 +1,6 @@
 ﻿namespace BJ
 {
-        public enum CardType
+        internal enum CardType
         {
         None = 0,
         Two = 1,

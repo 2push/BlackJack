@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    internal static class Values
+    internal static class GameValues
     {
         public static int playerMoney = 100;
         public static int botMoney = 1500;
@@ -18,5 +18,7 @@ namespace BJ
         public static int cardsTypes = 14;
         public static int cardsInType = 4;
         public static int moneyTransfer = 20;
+        public static int minimumMoneyAllowed = 19;
+        public static int randomBoolRange = 2;
     }
 }

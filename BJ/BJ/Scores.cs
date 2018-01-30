@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BJ
 {
-    class Scores
-    {
-        ConsoleOutput consoleOutput = new ConsoleOutput();
+    internal class Scores
+    {       
         Dealer _dealer;
         private int _cardValue = 2;
         Dictionary<CardType, int> _cardsValue = new Dictionary<CardType, int>();
@@ -18,10 +17,10 @@ namespace BJ
             _dealer = dealer;
             _dealer.CardReceived += AddScores;
 
-            for (int i = 1; i < Values.cardsTillAceNum; i++)
+            for (int i = 1; i < GameValues.cardsTillAceNum; i++)
             {
                 _cardsValue.Add((CardType)i, _cardValue);
-                if (_cardValue < Values.cardValueMax)
+                if (_cardValue < GameValues.cardValueMax)
                 {
                     _cardValue++;
                 }               
@@ -30,40 +29,49 @@ namespace BJ
          
         public void AddScores(Player character, CardType cardType)
         {
-            _cardsValue[CardType.Ace] = Values.aceLowValue;
-            if (character.CurrentPoints < Values.aceHighValue)
+            _cardsValue[CardType.Ace] = GameValues.aceLowValue;
+            if (character.CurrentPoints < GameValues.aceHighValue)
             {
-                _cardsValue[CardType.Ace] = Values.aceHighValue;
+                _cardsValue[CardType.Ace] = GameValues.aceHighValue;
             }
             character.CurrentPoints += _cardsValue[cardType];
-            consoleOutput.ShowWhatCardTaken(character.PlayerType, cardType, _cardsValue[cardType]);
+            ConsoleOutput.ShowWhatCardTaken(character.PlayerType, cardType, _cardsValue[cardType]);
             CheckScores(character);
         }
 
         public void CheckScores(Player character)
         {
-            consoleOutput.ShowScoresHas(character.PlayerType, character.CurrentPoints);
-            if (character.CurrentPoints > Values.scoreLimit)
+            ConsoleOutput.ShowScoresHas(character.PlayerType, character.CurrentPoints);
+            if (character.CurrentPoints > GameValues.scoreLimit)
             {
-                consoleOutput.ShowBustsMessage(character.PlayerType);
+                ConsoleOutput.ShowBustsMessage(character.PlayerType);
                 return;
             }
         }
 
-        public PlayerType CheckFinalScores(int playerPoints, int botPoints)
+        public PlayerType CheckFinalScores(ref Player user, ref Player bot)
         {
-            if (playerPoints > Values.scoreLimit)
+            if (user.CurrentPoints > GameValues.scoreLimit)
             {
-                consoleOutput.ShowPlayerLostMessage();
+                ConsoleOutput.ShowPlayerLostMessage();
+                RefreshPoints(ref user, ref bot);
                 return PlayerType.Bot;
             }
-            if (playerPoints > botPoints || botPoints > Values.scoreLimit)
+            if (user.CurrentPoints > bot.CurrentPoints || bot.CurrentPoints > GameValues.scoreLimit)
             {
-                consoleOutput.ShowPlayerWonMessage();
+                ConsoleOutput.ShowPlayerWonMessage();
+                RefreshPoints(ref user, ref bot);
                 return PlayerType.User;
             }
-            consoleOutput.ShowPlayerLostMessage();
+            ConsoleOutput.ShowPlayerLostMessage();
+            RefreshPoints(ref user, ref bot);
             return PlayerType.Bot;
+        }
+
+        private void RefreshPoints(ref Player user, ref Player bot)
+        {
+            user.CurrentPoints = 0;
+            bot.CurrentPoints = 0;
         }
     }
 }
