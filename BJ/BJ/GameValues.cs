@@ -20,5 +20,6 @@ namespace BJ
         public static int moneyTransfer = 20;
         public static int minimumMoneyAllowed = 19;
         public static int randomBoolRange = 2;
+        public static int amountOfFirstCards = 2;
     }
 }

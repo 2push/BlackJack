@@ -8,15 +8,15 @@ namespace BJ
 {
     internal class Disrtibution
     {
-        Player _player = new Player(PlayerType.User);
-        Player _bot = new Player(PlayerType.Bot);
-        Random rnd = new Random(); //bot's decision
-        Dealer dealer = new Dealer();
-        Scores scores;
+        private Player _player = new Player(PlayerType.User);
+        private Player _bot = new Player(PlayerType.Bot);
+        private Random _rnd = new Random(); //bot's decision
+        private Dealer _dealer = new Dealer();
+        private Scores _scores;
 
         public Disrtibution()
         {
-            scores = new Scores(dealer);
+            _scores = new Scores(_dealer);
         }
 
         public void Start(out Player player, out Player bot)
@@ -26,7 +26,7 @@ namespace BJ
             ConsoleOutput.AnnounceMoneyAmount(_player, _bot);
             DoPlayersTurn(_player);
             DoPlayersTurn(_bot);
-            TransferMoneyToWinner(scores.CheckFinalScores(ref _player,ref _bot));
+            TransferMoneyToWinner(_scores.CheckFinalScores(ref _player,ref _bot));
             player = _player;
             bot = _bot;
         }       
@@ -34,16 +34,16 @@ namespace BJ
         private void DoPlayersTurn(Player player)
         {
             ConsoleOutput.ShowTurnMessage(player.PlayerType);
-            dealer.GetFirstTwoCards(ref player);             
+            _dealer.GetFirstCards(ref player);             
             while (player.PlayerType is PlayerType.User ? ConsoleOutput.AskForNewCard() : BotsDecision())
             {            
-                dealer.GetCard(ref player);
+                _dealer.GetCard(ref player);
             }            
         }
 
         private bool BotsDecision()
         {
-            return Convert.ToBoolean(rnd.Next(GameValues.randomBoolRange));
+            return Convert.ToBoolean(_rnd.Next(GameValues.randomBoolRange));
         }
 
         private void TransferMoneyToWinner(PlayerType characterType)

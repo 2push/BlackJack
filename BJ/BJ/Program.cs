@@ -11,7 +11,7 @@ namespace BJ
         static void Main(string[] args)
         {
             NewRound nextRound = new NewRound();
-            nextRound.StartTheGame();              
+            nextRound.StartTheGame();
         }
     }
 }

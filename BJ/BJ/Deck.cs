@@ -8,19 +8,19 @@ namespace BJ
 {
     internal class Deck
     {
-        List<CardType> cardsList = new List<CardType>();
+        private List<CardType> _cardsList = new List<CardType>();
 
         public List<CardType> GetDeck()
         {
             GenerateDeck();
-            return cardsList;
+            return _cardsList;
         }
 
         private void GenerateDeck()
         {
             for (int i = 1; i < GameValues.cardsTypes; i++)
             {
-                cardsList.AddRange(GenerateCardType(i));
+                _cardsList.AddRange(GenerateCardType(i));
             }
         }
 

@@ -8,24 +8,20 @@ namespace BJ
 {
     internal class Dealer
     {
-        private int _randomElementIndex;
-        Deck _deck = new Deck();
-        private List<CardType> _cardsList;
+        private Deck _deck = new Deck();
         private Stack<CardType> _cardsStack;
-        Random rnd = new Random();
+        private Random _rnd = new Random();
         public delegate void AddingScores(Player player, CardType cardType);
         public event AddingScores CardReceived;
 
         public Dealer()
         {
-            _cardsList = _deck.GetDeck();
-            SortDeck();
-            _cardsStack = new Stack<CardType>(_cardsList);
+            _cardsStack = SortDeck(_deck.GetDeck());          
         }
 
-        public void GetFirstTwoCards(ref Player character)
+        public void GetFirstCards(ref Player character)
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < GameValues.amountOfFirstCards; i++)
             {
                 GetCard(ref character);
             }
@@ -40,14 +36,18 @@ namespace BJ
             }
         }
 
-        private void SortDeck()
+        public Stack<CardType> SortDeck(List<CardType> listOfCards)
         {
-            for (int i = 0; i < _cardsList.Count; i++)
+            int n = listOfCards.Count;
+            while (n > 1)
             {
-                CardType tmp = _cardsList[0];
-                _cardsList.RemoveAt(0);
-                _cardsList.Insert(rnd.Next(_cardsList.Count), tmp);
+                n--;
+                int k = _rnd.Next(n + 1);
+                CardType value = listOfCards[k];
+                listOfCards[k] = listOfCards[n];
+                listOfCards[n] = value;
             }
-        }     
+            return new Stack<CardType>(listOfCards);
+        }
     }
 }

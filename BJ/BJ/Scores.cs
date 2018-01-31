@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace BJ
 {
     internal class Scores
-    {       
-        Dealer _dealer;
+    {
+        private Dealer _dealer;
         private int _cardValue = 2;
-        Dictionary<CardType, int> _cardsValue = new Dictionary<CardType, int>();
+        private Dictionary<CardType, int> _cardsValue = new Dictionary<CardType, int>();
 
         public Scores(Dealer dealer)
         {
@@ -54,21 +54,21 @@ namespace BJ
             if (user.CurrentPoints > GameValues.scoreLimit)
             {
                 ConsoleOutput.ShowPlayerLostMessage();
-                RefreshPoints(ref user, ref bot);
+                RefreshScores(ref user, ref bot);
                 return PlayerType.Bot;
             }
             if (user.CurrentPoints > bot.CurrentPoints || bot.CurrentPoints > GameValues.scoreLimit)
             {
                 ConsoleOutput.ShowPlayerWonMessage();
-                RefreshPoints(ref user, ref bot);
+                RefreshScores(ref user, ref bot);
                 return PlayerType.User;
             }
             ConsoleOutput.ShowPlayerLostMessage();
-            RefreshPoints(ref user, ref bot);
+            RefreshScores(ref user, ref bot);
             return PlayerType.Bot;
         }
 
-        private void RefreshPoints(ref Player user, ref Player bot)
+        private void RefreshScores(ref Player user, ref Player bot)
         {
             user.CurrentPoints = 0;
             bot.CurrentPoints = 0;
