@@ -9,34 +9,41 @@ namespace BJ
     internal class Scores
     {
         private Dealer _dealer;
-        private int _cardValue = 2;
-        private Dictionary<CardType, int> _cardsValue = new Dictionary<CardType, int>();
+        private int _cardValue;
 
         public Scores(Dealer dealer)
         {
             _dealer = dealer;
-            _dealer.CardReceived += AddScores;
-
-            for (int i = 1; i < GameValues.cardsTillAceNum; i++)
-            {
-                _cardsValue.Add((CardType)i, _cardValue);
-                if (_cardValue < GameValues.cardValueMax)
-                {
-                    _cardValue++;
-                }               
-            }
+            _dealer.CardReceived += AddScores;           
         }
          
         public void AddScores(Player character, CardType cardType)
         {
-            _cardsValue[CardType.Ace] = GameValues.aceLowValue;
-            if (character.CurrentPoints < GameValues.aceHighValue)
-            {
-                _cardsValue[CardType.Ace] = GameValues.aceHighValue;
-            }
-            character.CurrentPoints += _cardsValue[cardType];
-            ConsoleOutput.ShowWhatCardTaken(character.PlayerType, cardType, _cardsValue[cardType]);
+            _cardValue = GameValues.cardSmallestValue;
+            character.CurrentPoints += DefineCardValue(character.CurrentPoints, cardType);
+            ConsoleOutput.ShowWhatCardTaken(character.PlayerType, cardType, _cardValue);
             CheckScores(character);
+        }
+
+        private int DefineCardValue(int playerScore, CardType card)
+        {
+            for (int i = 1; i < GameValues.cardsTillAceNum; i++)
+            {
+                if (card == (CardType)i)
+                {
+                    return _cardValue;
+                }
+                if (_cardValue < GameValues.cardValueMax)
+                {
+                    _cardValue++;
+                }
+            }
+            if (playerScore > GameValues.scoreLimitToHighAce)
+            {
+                _cardValue = GameValues.aceLowValue;
+            }
+            _cardValue = GameValues.aceHighValue;
+            return _cardValue;
         }
 
         public void CheckScores(Player character)
@@ -49,26 +56,26 @@ namespace BJ
             }
         }
 
-        public PlayerType CheckFinalScores(ref Player user, ref Player bot)
+        public PlayerType CheckFinalScores(Player user, Player bot)
         {
             if (user.CurrentPoints > GameValues.scoreLimit)
             {
                 ConsoleOutput.ShowPlayerLostMessage();
-                RefreshScores(ref user, ref bot);
+                RefreshScores(user, bot);
                 return PlayerType.Bot;
             }
             if (user.CurrentPoints > bot.CurrentPoints || bot.CurrentPoints > GameValues.scoreLimit)
             {
                 ConsoleOutput.ShowPlayerWonMessage();
-                RefreshScores(ref user, ref bot);
+                RefreshScores(user, bot);
                 return PlayerType.User;
             }
             ConsoleOutput.ShowPlayerLostMessage();
-            RefreshScores(ref user, ref bot);
+            RefreshScores(user, bot);
             return PlayerType.Bot;
         }
 
-        private void RefreshScores(ref Player user, ref Player bot)
+        private void RefreshScores(Player user, Player bot)
         {
             user.CurrentPoints = 0;
             bot.CurrentPoints = 0;

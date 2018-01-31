@@ -11,13 +11,13 @@ namespace BJ
         public static bool AskForBeginning()
         {
             Console.WriteLine("G'day!Let's begin? y/n");
-            return Console.ReadLine() == "y";
+            return Console.ReadLine() == Answer.y.ToString();
         }
 
         public static bool AskForNewRound()
         {
             Console.WriteLine("One more round? y/n");
-            return Console.ReadLine() == "y"; 
+            return Console.ReadLine() == Answer.y.ToString(); 
         }
 
         public static void ShowEndGameMessage()
@@ -44,7 +44,7 @@ namespace BJ
         public static bool AskForNewCard()
         {
             Console.WriteLine("More? y/n");
-            return Console.ReadLine() == "y";
+            return Console.ReadLine() == Answer.y.ToString();
         }
 
         public static void ShowWhatCardTaken(PlayerType playerType, CardType cardType, int cardValue)

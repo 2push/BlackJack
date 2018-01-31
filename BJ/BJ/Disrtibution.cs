@@ -26,7 +26,7 @@ namespace BJ
             ConsoleOutput.AnnounceMoneyAmount(_player, _bot);
             DoPlayersTurn(_player);
             DoPlayersTurn(_bot);
-            TransferMoneyToWinner(_scores.CheckFinalScores(ref _player,ref _bot));
+            TransferMoneyToWinner(_scores.CheckFinalScores(_player,_bot));
             player = _player;
             bot = _bot;
         }       
@@ -34,10 +34,10 @@ namespace BJ
         private void DoPlayersTurn(Player player)
         {
             ConsoleOutput.ShowTurnMessage(player.PlayerType);
-            _dealer.GetFirstCards(ref player);             
+            _dealer.GetFirstCards(player);             
             while (player.PlayerType is PlayerType.User ? ConsoleOutput.AskForNewCard() : BotsDecision())
             {            
-                _dealer.GetCard(ref player);
+                _dealer.GetCard(player);
             }            
         }
 

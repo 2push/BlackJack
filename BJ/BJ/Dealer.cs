@@ -19,15 +19,15 @@ namespace BJ
             _cardsStack = SortDeck(_deck.GetDeck());          
         }
 
-        public void GetFirstCards(ref Player character)
+        public void GetFirstCards(Player character)
         {
             for (int i = 0; i < GameValues.amountOfFirstCards; i++)
             {
-                GetCard(ref character);
+                GetCard(character);
             }
         }
 
-        public void GetCard(ref Player character)
+        public void GetCard(Player character)
         {
             character.Cards.Add(_cardsStack.Pop());
             if (CardReceived != null)
