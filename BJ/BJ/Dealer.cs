@@ -10,7 +10,7 @@ namespace BJ
     {
         private Deck _deck = new Deck();
         private Stack<CardType> _cardsStack;
-        private Random _rnd = new Random();
+        private Random _random = new Random();
         public delegate void AddingScores(Player player, CardType cardType);
         public event AddingScores CardReceived;
 
@@ -36,17 +36,9 @@ namespace BJ
             }
         }
 
-        public Stack<CardType> SortDeck(List<CardType> listOfCards)
+        private Stack<CardType> SortDeck(List<CardType> listOfCards)
         {
-            int n = listOfCards.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = _rnd.Next(n + 1);
-                CardType value = listOfCards[k];
-                listOfCards[k] = listOfCards[n];
-                listOfCards[n] = value;
-            }
+            listOfCards = listOfCards.ToArray().OrderBy(x => _random.Next()).ToList<CardType>();
             return new Stack<CardType>(listOfCards);
         }
     }

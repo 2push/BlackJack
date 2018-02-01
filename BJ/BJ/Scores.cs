@@ -66,7 +66,7 @@ namespace BJ
             }
             if (user.CurrentPoints > bot.CurrentPoints || bot.CurrentPoints > GameValues.scoreLimit)
             {
-                ConsoleOutput.ShowPlayerWonMessage();
+                ConsoleOutput.ShowPlayerWinMessage();
                 RefreshScores(user, bot);
                 return PlayerType.User;
             }

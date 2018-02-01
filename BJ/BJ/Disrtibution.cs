@@ -10,7 +10,7 @@ namespace BJ
     {
         private Player _player = new Player(PlayerType.User);
         private Player _bot = new Player(PlayerType.Bot);
-        private Random _rnd = new Random(); //bot's decision
+        private Random _random = new Random(); //bot's decision
         private Dealer _dealer = new Dealer();
         private Scores _scores;
 
@@ -43,7 +43,7 @@ namespace BJ
 
         private bool BotsDecision()
         {
-            return Convert.ToBoolean(_rnd.Next(GameValues.randomBoolRange));
+            return Convert.ToBoolean(_random.Next(GameValues.randomBoolRange));
         }
 
         private void TransferMoneyToWinner(PlayerType characterType)

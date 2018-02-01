@@ -23,5 +23,7 @@ namespace BJ
         public static int randomBoolRange = 2;
         public static int amountOfFirstCards = 2;
         public static int cardSmallestValue = 2;
+        public static int firstTypeOfCardsToGenerate = 1;
+        public static int amountOfCards = 52;
     }
 }

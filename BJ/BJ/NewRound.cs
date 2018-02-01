@@ -44,7 +44,7 @@ namespace BJ
 
             if (bot.Money < GameValues.minimumMoneyAllowed)
             {
-                ConsoleOutput.ShowPlayerWonMessage();
+                ConsoleOutput.ShowPlayerWinMessage();
                 return;
             }
             AskForNewRound();

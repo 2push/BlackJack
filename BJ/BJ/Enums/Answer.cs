@@ -3,7 +3,7 @@
     internal enum Answer
     {
       None = 0,
-      y = 1,
-      n = 2
+      yes = 1,
+      no = 2
     }
 }
