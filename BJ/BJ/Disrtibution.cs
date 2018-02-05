@@ -16,13 +16,13 @@ namespace BJ
 
         public Disrtibution()
         {
-            _scores = new Scores(_dealer);
+            _scores = new Scores();
         }
 
         public void Start(out Player player, out Player bot)
         {    
-            _player.Cards = new List<CardType>();
-            _bot.Cards = new List<CardType>();
+            _player.Cards = new List<Card>();
+            _bot.Cards = new List<Card>();
             ConsoleOutput.AnnounceMoneyAmount(_player, _bot);
             DoPlayersTurn(_player);
             DoPlayersTurn(_bot);

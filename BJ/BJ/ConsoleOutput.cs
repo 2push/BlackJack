@@ -47,9 +47,9 @@ namespace BJ
             return Console.ReadLine() == Answer.Yes.ToString();
         }
 
-        public static void ShowWhatCardTaken(PlayerType playerType, CardType cardType, int cardValue)
+        public static void ShowWhatCardTaken(PlayerType playerType, Card card)
         {
-            Console.WriteLine(String.Format("{0} has taken one card, which is {1} for {2} points.", playerType, cardType, cardValue));
+            Console.WriteLine(String.Format("{0} has taken one card, which is {1} for {2} points.", playerType, card.CardType, card.CardValue));
         }
 
         public static void ShowScoresHas(PlayerType playerType, int currentPoints)

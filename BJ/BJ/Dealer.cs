@@ -9,10 +9,9 @@ namespace BJ
     internal class Dealer
     {
         private Deck _deck = new Deck();
-        private Stack<CardType> _cardsStack;
+        private Stack<Card> _cardsStack;
         private Random _random = new Random();
-        public delegate void AddingScores(Player player, CardType cardType);
-        public event AddingScores CardReceived;
+        private Scores _scores = new Scores();
 
         public Dealer()
         {
@@ -30,16 +29,13 @@ namespace BJ
         public void GetCard(Player character)
         {
             character.Cards.Add(_cardsStack.Pop());
-            if (CardReceived != null)
-            {
-                CardReceived(character, character.Cards.Last());
-            }
+            _scores.AddScores(character, character.Cards.Last());
         }
 
-        private Stack<CardType> SortDeck(List<CardType> listOfCards)
+        private Stack<Card> SortDeck(List<Card> listOfCards)
         {
-            listOfCards = listOfCards.ToArray().OrderBy(x => _random.Next()).ToList<CardType>();
-            return new Stack<CardType>(listOfCards);
+            listOfCards = listOfCards.ToArray().OrderBy(x => _random.Next()).ToList<Card>();
+            return new Stack<Card>(listOfCards);
         }
     }
 }

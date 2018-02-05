@@ -8,9 +8,9 @@ namespace BJ
 {
     internal class Deck
     {
-        private List<CardType> _cardsList = new List<CardType>();
+        private List<Card> _cardsList = new List<Card>();
         private int _typeIterator = GameValues.firstTypeOfCardsToGenerate;
-        public List<CardType> GetDeck()
+        public List<Card> GetDeck()
         {
             GenerateDeck();
             return _cardsList;
@@ -24,7 +24,7 @@ namespace BJ
                 {
                     _typeIterator++;
                 }
-                _cardsList.Add((CardType)_typeIterator);
+                _cardsList.Add(new Card((CardType)_typeIterator));
             }
         }
     }

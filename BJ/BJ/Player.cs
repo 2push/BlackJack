@@ -11,7 +11,7 @@ namespace BJ
         public PlayerType PlayerType { get; private set; }
         public int CurrentPoints { get; set; }
         public int Money { get; set; } 
-        public List<CardType> Cards { get; set; }
+        public List<Card> Cards { get; set; }
         public int Victories { get; set; }
 
         public Player(PlayerType playerType)
