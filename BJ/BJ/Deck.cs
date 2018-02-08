@@ -9,7 +9,7 @@ namespace BJ
     internal class Deck
     {
         private List<Card> _cardsList = new List<Card>();
-        private int _typeIterator = GameValues.firstTypeOfCardsToGenerate;
+        private int _typeIterator;
         public List<Card> GetDeck()
         {
             GenerateDeck();
@@ -19,7 +19,7 @@ namespace BJ
         private void GenerateDeck()
         {
             for (int i = 0; i < GameValues.amountOfCards; i++)
-            {
+            {                
                 if (i % GameValues.cardsInType == 0)
                 {
                     _typeIterator++;
